@@ -4,17 +4,20 @@ import faiss
 import numpy as np
 from PyPDF2 import PdfReader
 from typing import List
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from dotenv import load_dotenv
-load_dotenv()
-from langchain.memory import ConversationBufferMemory
-from langchain.schema import SystemMessage, HumanMessage
-
 import io
 
+# Environment loader
+from dotenv import load_dotenv
+load_dotenv()
+
+# LangChain - Updated imports
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.embeddings import OpenAIEmbeddings
+from langchain_openai import ChatOpenAI
+from langchain.memory import ConversationBufferMemory
+from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_experimental.text_splitter import SemanticChunker
-from langchain.embeddings import OpenAIEmbeddings
+
 
 class RAGPipeline:
     def __init__(self):
@@ -35,16 +38,16 @@ class RAGPipeline:
 
  
     def chunk_text(self, text: str, chunk_size: int = 500, overlap: int = 50) -> List[str]:
-        # splitter = RecursiveCharacterTextSplitter(
-        #     chunk_size=chunk_size,
-        #     chunk_overlap=overlap,
-        #     separators=["\n\n", "\n", ".", " ", ""]
-        # )
-        splitter = SemanticChunker(
-            embeddings=OpenAIEmbeddings(model="text-embedding-3-small"),
-            breakpoint_threshold_type="percentile",  # or "standard_deviation"
-            breakpoint_threshold_amount=95  # try 90–98 to control granularity
+        splitter = RecursiveCharacterTextSplitter(
+            chunk_size=chunk_size,
+            chunk_overlap=overlap,
+            separators=["\n\n", "\n", ".", " ", ""]
         )
+        # splitter = SemanticChunker(
+        #     embeddings=OpenAIEmbeddings(model="text-embedding-3-small"),
+        #     breakpoint_threshold_type="percentile",  # or "standard_deviation"
+        #     breakpoint_threshold_amount=95  # try 90–98 to control granularity
+        # )
         return splitter.split_text(text)
 
     def build_index(self, chunks: List[str]):
