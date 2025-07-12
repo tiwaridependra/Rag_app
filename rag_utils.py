@@ -37,7 +37,7 @@ class RAGPipeline:
         return text  
 
  
-    def chunk_text(self, text: str, chunk_size: int = 1000, overlap: int = 80) -> List[str]:
+    def chunk_text(self, text: str, chunk_size: int = 2500, overlap: int = 100) -> List[str]:
         # splitter = RecursiveCharacterTextSplitter(
         #     chunk_size=chunk_size,
         #     chunk_overlap=overlap,
