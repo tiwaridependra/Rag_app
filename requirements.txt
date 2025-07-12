@@ -1,0 +1,12 @@
+streamlit
+python-dotenv
+PyPDF2
+# pytesseract
+# pdf2image
+# Pillow
+# fitz 
+numpy
+faiss-cpu
+langchain
+langchain-openai
+langchain-experimental
