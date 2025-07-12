@@ -37,7 +37,7 @@ class RAGPipeline:
         return text  
 
  
-    def chunk_text(self, text: str, chunk_size: int = 500, overlap: int = 50) -> List[str]:
+    def chunk_text(self, text: str, chunk_size: int = 1000, overlap: int = 30) -> List[str]:
         splitter = RecursiveCharacterTextSplitter(
             chunk_size=chunk_size,
             chunk_overlap=overlap,
@@ -57,7 +57,7 @@ class RAGPipeline:
         self.index = faiss.IndexFlatL2(dim)
         self.index.add(np.array(embeddings).astype("float32"))
 
-    def retrieve(self, query: str, top_k: int = 10) -> List[str]:
+    def retrieve(self, query: str, top_k: int = 5) -> List[str]:
         query_embedding = self.embedder.embed_query(query)
         D, I = self.index.search(np.array([query_embedding]).astype("float32"), top_k)
         return [self.text_chunks[i] for i in I[0]]
