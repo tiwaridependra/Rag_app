@@ -37,17 +37,17 @@ class RAGPipeline:
         return text  
 
  
-    def chunk_text(self, text: str, chunk_size: int = 1000, overlap: int = 30) -> List[str]:
-        splitter = RecursiveCharacterTextSplitter(
-            chunk_size=chunk_size,
-            chunk_overlap=overlap,
-            separators=["\n\n", "\n", ".", " ", ""]
-        )
-        # splitter = SemanticChunker(
-        #     embeddings=OpenAIEmbeddings(model="text-embedding-3-small"),
-        #     breakpoint_threshold_type="percentile",  # or "standard_deviation"
-        #     breakpoint_threshold_amount=95  # try 90–98 to control granularity
+    def chunk_text(self, text: str, chunk_size: int = 1000, overlap: int = 80) -> List[str]:
+        # splitter = RecursiveCharacterTextSplitter(
+        #     chunk_size=chunk_size,
+        #     chunk_overlap=overlap,
+        #     separators=["\n\n", "\n", ".", " ", ""]
         # )
+        splitter = SemanticChunker(
+            embeddings=OpenAIEmbeddings(model="text-embedding-3-small"),
+            breakpoint_threshold_type="percentile",  # or "standard_deviation"
+            breakpoint_threshold_amount=95  # try 90–98 to control granularity
+        )
         return splitter.split_text(text)
 
     def build_index(self, chunks: List[str]):
