@@ -10,3 +10,5 @@ faiss-cpu
 langchain
 langchain-openai
 langchain-experimental
+langchain-community
+openai
